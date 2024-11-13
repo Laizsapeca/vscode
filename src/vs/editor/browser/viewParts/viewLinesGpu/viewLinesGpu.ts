@@ -393,6 +393,7 @@ export class ViewLinesGpu extends ViewPart implements IViewLines {
 	}
 
 	private _renderText(viewportData: ViewportData): void {
+		console.log('_renderText');
 		this._viewGpuContext.rectangleRenderer.draw(viewportData);
 
 		const options = new ViewLineOptions(this._context.configuration, this._context.theme.type);

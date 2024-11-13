@@ -62,6 +62,7 @@ import { IVisibleRangeProvider, TextAreaEditContext } from './controller/editCon
 import { NativeEditContext } from './controller/editContext/native/nativeEditContext.js';
 import { RulersGpu } from './viewParts/rulersGpu/rulersGpu.js';
 import { EditContext } from './controller/editContext/native/editContextFactory.js';
+import { SelectionsGpu } from './viewParts/selectionsGpu/selectionsGpu.js';
 
 
 export interface IContentWidgetData {
@@ -220,6 +221,11 @@ export class View extends ViewEventHandler {
 			? new RulersGpu(this._context, this._viewGpuContext)
 			: new Rulers(this._context);
 		this._viewParts.push(rulers);
+
+		if (this._viewGpuContext) {
+			const selectionsGpu = new SelectionsGpu(this._context, this._viewGpuContext);
+			this._viewParts.push(selectionsGpu);
+		}
 
 		const blockOutline = new BlockDecorations(this._context);
 		this._viewParts.push(blockOutline);
@@ -566,7 +572,7 @@ export class View extends ViewEventHandler {
 					viewPartsToRender = this._getViewPartsToRender();
 				}
 
-				if (this._viewLinesGpu?.shouldRender()) {
+				if (this._viewLinesGpu) {
 					this._viewLinesGpu.renderText(viewportData);
 					this._viewLinesGpu.onDidRender();
 				}
